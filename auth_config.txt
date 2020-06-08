@@ -1,0 +1,13 @@
+Keyword,Radical_stance,Accepted_threshold
+police,neg,.3
+riot,pos,.2
+housing,neg,.1
+trump,neg,.1
+iran,pos,.2
+north korea,pos,.2
+cnn,pos,.1
+republicans,neg,.4
+republican,neg,.4
+violence,pos,.2
+assault,pos,.2
+crime,pos,.2

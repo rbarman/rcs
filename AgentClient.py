@@ -1,35 +1,18 @@
 '''
 AgentClient.py
-	Rohan Barman 4/12/2020
 
-AgentClient is a socket that connects and sends/received messages to an AgentServer 
-It can either be run in simulation mode where an Agent sends generated messages to the server
-or in non simulation mode where an end user can send free text via the terminal to the server. 
-
-AgentClients can also be initialized with a json containing GSP information. IT should be in atleast in format of:
-	{
-		,'Goals' :<>
-		,'Standards' :<>
-		,'Preferences' :<>
-	}
+AgentClient is a socket that connects and sends messages to an AgentServer 
+Agent's represent posting behavior of users on social media sites.
+	- Messages are generated on https://github.com/minimaxir/textgenrnn models
+	- Can instantiate a user with pretrained weights that work with textgenrnn architecture
 
 Example usage:
 
-	Default:
-		port (p) = 9572
-		simulation (s) = False
+	# run agent with default textgenrnn model
+	python AgentClient.py -p 9999 
+	# run agent with some pretrained weights (must pass path to weights!)
+	python AgentClient.py -p 9999 -w ~/Desktop/my_weights.hdf5
 
-	# run agent with in non simulation mode on port 9999
-	python AgentClient.py -p 9999
-
-	# run agent with in non simulation mode on port 9999 and specified path to file with GSP
-	python AgentClient.py -p 9999 -GSP GSP.json
-
-	# run agent with in simulation mode on port 9999 and specified path to file with GSP
-	python AgentClient.py -p 9999 -GSP GSP.json  -s True > simulated_log.txt	
-
-	# run agent with in simulation mode on port 9999
-	python AgentClient.py -p 9999 -GSP GSP.json  -s True > simulated_log.txt	
 '''
 
 import socket
@@ -56,8 +39,7 @@ class AgentClient:
 
 	def run(self):
 		''' Client is connected with server and sending messages
-				Client can be in simulation mode - send auto generated messages
-				Or in non simulation mode - User sends messages via terminal
+				Generating messages with textenrnn
 		'''
 
 		# Client gets an introductory message from server after connecting
@@ -65,8 +47,7 @@ class AgentClient:
 		print(f'{s_msg}')
 
 		while True:
-			# send a message TO server
-
+			# send a generated message TO server
 			generated_text = self.textgen.generate(return_as_list = True, temperature = 1.0)[0].encode('utf-8')
 			print(generated_text)
 			self.socket.send(generated_text)

@@ -1,26 +1,13 @@
 '''
 AgentServer.py
-	Rohan Barman 4/12/2020
 
 AgentServer is a server socket that accepts connections from multiple client sockets.
-AgentServers are expecting clients to send a json of atleast the following:
-	{
-		'message' :<>
-		,'Goals' :<>
-		,'Standards' :<>
-		,'Preferences' :<>
-	}
-
-AgentServer approximates the sentiment of the Client's message and returns a emotionally
-relevant message back to the Client. The message can have a reference to a Client's GSPs
+Agent's represent the authority figures and analyze messages between clients
+Agent's must pass in an auth_config. The config creates constratins to 
+	determine what messages are radical or not. 
 
 Example usage:
-
-	Default:
-		port (p) = 9572
-
-	python AgentServer.py  > server_logs.txt
-	python AgentServer.py -p 9999 > server_logs.txt	
+	python AgentServer.py -p 9999 -c ~/Desktop/auth_config.txt
 '''
 
 import socket
@@ -87,7 +74,7 @@ class AgentServer:
 			self.user_dict[f'{user}'][f'{keyword}'].append(scores)
 
 	def calc_score_metrics(self,user_id,keyword,stance, most_recent=3):
-		''' stance = neg/pos '''
+		
 		scores = []
 		for record in self.user_dict[f'{user_id}'][f'{keyword}']:
 			scores.append(record[f'{stance}'])
